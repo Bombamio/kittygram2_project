@@ -1,0 +1,38 @@
+POST http://127.0.0.1:8000/auth/users/
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "change_me"
+}
+
+###
+POST http://127.0.0.1:8000/auth/jwt/create/
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "change_me"
+}
+
+###
+{
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjQzNTQzMywiaWF0IjoxNzYyMzQ5MDMzLCJqdGkiOiIyMDU4OWI0NmJiODM0NTE1OGYyNjM5MmFhM2E5NWVkYiIsInVzZXJfaWQiOjF9.KTObuFtUG5eVDX2OYkEnKCtCbJP-Z8taWc90PAf4hfs",
+  "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYyNDM1NDMzLCJpYXQiOjE3NjIzNDkwMzMsImp0aSI6IjFlNTU5Y2I1ZDM5ODRlMzA4NDBhZWVmMTgzZmY4MTI5IiwidXNlcl9pZCI6MX0.Tz0Ay9SHnB2LMPIzyzc5tz6LkopBQh2I-DrRnc-yUrk"
+}
+###
+POST http://127.0.0.1:8000/cats/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYyNDM1NDMzLCJpYXQiOjE3NjIzNDkwMzMsImp0aSI6IjFlNTU5Y2I1ZDM5ODRlMzA4NDBhZWVmMTgzZmY4MTI5IiwidXNlcl9pZCI6MX0.Tz0Ay9SHnB2LMPIzyzc5tz6LkopBQh2I-DrRnc-yUrk
+Content-Type: application/json
+
+{
+    "name": "Gray",
+    "color": "White",
+    "birth_year": 2011
+}
+###
+GET http://127.0.0.1:8000/cats/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYyNDMyODk1LCJpYXQiOjE3NjIzNDY0OTUsImp0aSI6IjRkMmVlMDBiNjk3NTQ3ZGQ4Y2Q0NTAzYWZlMjFkYjM4IiwidXNlcl9pZCI6MX0.0ZZsSMlzvfeifSWMS0WND0ksB7JyfCcwVsKpowafPZY
+###
+DELETE http://127.0.0.1:8000/cats/2/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYyNDM1NDMzLCJpYXQiOjE3NjIzNDkwMzMsImp0aSI6IjFlNTU5Y2I1ZDM5ODRlMzA4NDBhZWVmMTgzZmY4MTI5IiwidXNlcl9pZCI6MX0.Tz0Ay9SHnB2LMPIzyzc5tz6LkopBQh2I-DrRnc-yUrk

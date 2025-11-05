@@ -26,12 +26,51 @@ class AchievementSerializer(serializers.ModelSerializer):
 class CatSerializer(serializers.ModelSerializer):
     achievements = AchievementSerializer(many=True, required=False)
     color = serializers.ChoiceField(choices=CHOICES)
+
+    """ Важно: класс UniqueTogetherValidator всегда накладывает неявное
+    ограничение: все поля сериализатора, к которым применён этот
+    валидатор, обрабатываются как обязательные. Поля со значением
+    default — исключение: они всегда предоставляют значение, даже если
+    пользователь не передал их в запросе. """
+
+    # Для этого варианте не нужен perform_create,
+    # но и взаимодействовать с ним нельзя.
+    # owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    # Для него обязательно нужен save() в perform_create.
+    owner = serializers.PrimaryKeyRelatedField(
+            read_only=True, default=serializers.CurrentUserDefault()
+        )
     age = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Cat
-        fields = ('id', 'name', 'color', 'birth_year', 'achievements', 'owner',
-                  'age')
+        fields = (
+            'id', 'name', 'color', 'birth_year', 'achievements',
+            'owner', 'age',
+        )
+        # read_only_fields = ('owner',)
+
+        # Не обязателен при указании в модели пораметра unique_together
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Cat.objects.all(),
+                fields=("name", "owner")
+            )
+        ]
+
+    def validate(self, data):
+        if data["color"] == data["name"]:
+            raise serializers.ValidationError(
+                "Имя не может совпадать с цветом!"
+            )
+        return data
+
+    def validate_birth_date(self, value):
+        year = dt.date.today().year
+        if not (year - 40 < value <= year):
+            raise serializers.ValidationError("Проверьте год рождения!")
+        return value
 
     def get_age(self, obj):
         return dt.datetime.now().year - obj.birth_year
